@@ -30,31 +30,33 @@
 <!--CONNECT TO DATABASE, FETCH DATA, WRITE DATA-->
       
       <?php
-        $host="localhost";
-        $username="youatemy_comments";
-        $password="New-Comments";
-        $databasename="youatemy_comments";
+        $host = "localhost";
+        $username = "youatemy_commentsDB";
+        $password = "v5Dfh;dW%kya";
+        $databasename = "youatemy_comments";
+        $connect = mysqli_connect($host, $username, $password, $databasename);
 
-        $connect=mysql_connect($host,$username,$password);
-        $db=mysql_select_db($databasename);
-
-        $comm = mysql_query("select name,comment,post_time from comments order by post_time desc");
-        while($row=mysql_fetch_array($comm))
-        {
-        $name=$row['name'];
-        $comment=$row['comment'];
-        $time=$row['post_time'];
-        ?>
-
-        <div class="comment_div"> 
-          <p class="comment"><?php echo $comment;?></p>	
-          <p class="name">by: <?php echo $name;?></p>          
-          <p class="time"><?php echo $time;?></p>
-        </div>
-
-        <?php
+        if (!$connect) {
+          die("Connection failed: " . mysqli_connect_error());
         }
-        ?>
+        
+        $sql = "SELECT name, comment, post_time FROM comments order by post_time desc";
+        $result = mysqli_query($connect, $sql);
+        while($row = mysqli_fetch_assoc($result)) {
+          $name = $row['name'];
+          $comment = $row['comment'];
+          $time = $row['post_time'];
+          ?>
+
+          <div class="comment_div"> 
+            <p class="comment"><?php echo $comment;?></p>	
+            <p class="name">by: <?php echo $name;?></p>          
+            <p class="time"><?php echo $time;?></p>
+          </div>
+
+          <?php
+          }
+          ?>
       </div>  
     </div>
   </div>
